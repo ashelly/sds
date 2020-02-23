@@ -720,6 +720,19 @@ sds sdstrim(sds s, const char *cset) {
     return s;
 }
 
+sds sdstrimtail(sds s, const char *cset) {
+    char *start, *end, *sp, *ep;
+    size_t len;
+
+    sp = s;
+    ep = end = s+sdslen(s)-1;
+    while(ep >= sp && strchr(cset, *ep)) ep--;
+    len = (sp > ep) ? 0 : ((ep-sp)+1);
+    s[len] = '\0';
+    sdssetlen(s,len);
+    return s;
+}
+
 /* Turn the string into a smaller (or equal) string containing only the
  * substring specified by the 'start' and 'end' indexes.
  *
